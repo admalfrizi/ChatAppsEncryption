@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">ChatAppsTrials</string>
+    <string name="sign_in">Sign In</string>
+    <string name="welcome">Selamat Datang</string>
+    <string name="silahkan_login_ke_aplikasi_anda">Silahkan Login Ke Aplikasi Anda</string>
+    <string name="icon">icon</string>
+    <string name="title_activity_bottom_nav">BottomNav</string>
+    <string name="settings">Pengaturan</string>
+    <string name="masukan_email_anda">Masukan Email Anda</string>
+    <string name="email">Email</string>
+    <string name="masukan_password_anda">Masukan Password Anda</string>
+    <string name="password">Password</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="silahkan_masukan_data_anda">Silahkan Masukan Data Anda</string>
+    <string name="masukan_nama_anda">Masukan Nama Anda</string>
+    <string name="nama">Nama</string>
+    <string name="obrolan">Obrolan</string>
+    <string name="belum_punya_akun_ya">Belum Punya Akun ya ?</string>
+    <string name="klik_disini">Daftar Disini !</string>
+    <string name="warning_logout">Anda yakin mau keluar dari akun anda ?</string>
+    <string name="cancel">Batalkan</string>
+    <string name="logout_button">Logout</string>
+    <string name="logout">Logout</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="gambar_profile">gambar_profile</string>
+    <string name="change_data">Ubah Isi Data</string>
+    <string name="image_update">Ubah Gambar Profil</string>
+    <string name="this_is_sender_message">This is sender message</string>
+    <string name="this_is_receiver_message">This is Receiver Message</string>
+    <string name="tuliskan_pesan_anda_disini">Ketik Pesan Anda Disini</string>
+    <string name="back">back</string>
+    <string name="isi_obrolan_kamu">Isi Obrolan Kamu</string>
+    <string name="silahkan_pilih_sumber_gambar_kalian">Silahkan Pilih Sumber Gambar Kalian !</string>
+    <string name="kamera">Kamera</string>
+    <string name="galeri">Galeri</string>
+    <string name="this_is_receiver_name">This is Receiver name</string>
+</resources>

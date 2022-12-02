@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#5EE6B7"
+    android:orientation="vertical"
+    tools:context=".ui.RegisterScreen">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:orientation="vertical"
+        android:paddingHorizontal="23dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/welcome"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="36sp"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/silahkan_masukan_data_anda"
+            android:textColor="@color/white"
+            android:textSize="18sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="23dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="39dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/nama"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:layout_marginStart="30dp"
+            android:layout_marginBottom="10dp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:labelFor="@+id/email"
+            android:id="@+id/name_edt"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:background="@drawable/ed_txt"
+            android:drawablePadding="21dp"
+            android:textColor="@color/black"
+            android:paddingStart="33dp"
+            android:textSize="14sp"
+            tools:ignore="RtlSymmetry"
+            android:hint="@string/masukan_nama_anda"
+            android:textColorHint="@color/black"
+            android:inputType="textEmailAddress"
+            android:importantForAutofill="no"
+            android:paddingLeft="33dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="23dp"
+        android:layout_marginBottom="39dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/email"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:layout_marginStart="30dp"
+            android:layout_marginBottom="10dp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:labelFor="@+id/email"
+            android:id="@+id/email_edt"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:background="@drawable/ed_txt"
+            android:drawablePadding="21dp"
+            android:textColor="@color/black"
+            android:paddingStart="33dp"
+            android:textSize="14sp"
+            tools:ignore="RtlSymmetry"
+            android:hint="@string/masukan_email_anda"
+            android:textColorHint="@color/black"
+            android:inputType="textEmailAddress"
+            android:importantForAutofill="no"
+            android:paddingLeft="33dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="23dp"
+        android:layout_marginBottom="50dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/password"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:layout_marginStart="30dp"
+            android:layout_marginBottom="10dp"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
+
+        <EditText
+            android:labelFor="@+id/password"
+            android:id="@+id/pw_edt"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:background="@drawable/ed_txt"
+            android:drawablePadding="21dp"
+            android:textColor="@color/black"
+            android:paddingStart="33dp"
+            android:hint="@string/masukan_password_anda"
+            android:textColorHint="@color/black"
+            android:textSize="14sp"
+            tools:ignore="RtlSymmetry"
+            android:inputType="textPassword"
+            android:importantForAutofill="no"
+            android:paddingLeft="33dp" />
+
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/regBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/sign_up"
+        android:layout_marginHorizontal="23dp"
+        android:background="@drawable/google_login"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+    <ProgressBar
+        android:id="@+id/ld"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_gravity="center_horizontal"/>
+
+
+</LinearLayout>

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context=".ui.EditData">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:translationZ="0.1dp"
+        app:elevation="0dp"
+        tools:targetApi="lollipop">
+
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/teal_200">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/btnBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_arrow_back_24"
+                    android:contentDescription="back" />
+
+                <TextView
+                    android:layout_marginTop="2dp"
+                    android:layout_marginStart="18dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Update Data User"
+                    android:fontFamily="sans-serif-black"
+                    android:textColor="@color/white"
+                    />
+
+            </LinearLayout>
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="40dp"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center_horizontal"
+        app:cardCornerRadius="25dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_inisial"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="AAI"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/image_profile"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/ed_txt"
+                android:contentDescription="@string/gambar_profile"
+                android:scaleType="centerCrop" />
+
+        </RelativeLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_marginHorizontal="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <EditText
+            android:id="@+id/user_edt"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:background="@drawable/ed_txt"
+            android:drawablePadding="21dp"
+            android:textColor="@color/black"
+            android:paddingStart="33dp"
+            android:textSize="14sp"
+            tools:ignore="RtlSymmetry"
+            android:layout_marginBottom="30dp"
+            android:textColorHint="@color/black"
+            android:fontFamily="sans-serif"
+            android:inputType="textEmailAddress"
+            android:importantForAutofill="no"
+            android:paddingLeft="33dp" />
+
+        <EditText
+            android:labelFor="@+id/username"
+            android:id="@+id/email_edt"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:background="@drawable/ed_txt"
+            android:drawablePadding="21dp"
+            android:layout_marginBottom="30dp"
+            android:textColor="@color/black"
+            android:paddingStart="33dp"
+            android:textSize="13sp"
+            tools:ignore="RtlSymmetry"
+            android:textColorHint="@color/black"
+            android:fontFamily="sans-serif"
+            android:inputType="textEmailAddress"
+            android:importantForAutofill="no"
+            android:paddingLeft="33dp" />
+
+    </LinearLayout>
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/updateImgBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="20dp"
+        android:background="@color/teal_200"
+        android:textColor="@color/white"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:text="@string/image_update"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnChange"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="20dp"
+        android:background="@color/teal_200"
+        android:textColor="@color/white"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:text="@string/change_data"/>
+
+    <ProgressBar
+        android:id="@+id/ld"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:visibility="gone"/>
+
+
+
+</LinearLayout>
