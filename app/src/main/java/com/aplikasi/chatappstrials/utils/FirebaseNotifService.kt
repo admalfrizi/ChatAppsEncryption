@@ -43,17 +43,16 @@ class FirebaseNotifService : FirebaseMessagingService() {
 
             if(Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
                 createOreoNotif(title, message, id, img)
-                remoteData.notification?.let {
-                    Log.d(TAG, "Pesan Notifikasi Body : ${it.body}")
-
-                }
             }
             else {
                 createNotif(title, message, id, img)
-                remoteData.notification?.let {
-                    Log.d(TAG, "Pesan Notifikasi Body : ${it.body}")
+            }
+        }
 
-                }
+        if (remoteData.notification != null){
+            remoteData.notification?.let {
+                Log.d(TAG, "Pesan Notifikasi Body : ${it.body}")
+
             }
         }
     }
@@ -103,6 +102,4 @@ class FirebaseNotifService : FirebaseMessagingService() {
     private fun updateToken(token: String) {
         Log.d(TAG, "updateToken($token)")
     }
-
-
 }
