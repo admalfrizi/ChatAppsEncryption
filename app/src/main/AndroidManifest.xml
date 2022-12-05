@@ -5,6 +5,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" tools:node="remove"/>
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
     <application
@@ -17,20 +18,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ChatAppsTrials"
         tools:targetApi="31">
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_chat" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/white" />
         <activity
             android:name=".ui.ChatRoom"
             android:exported="false" />
-
-        <service android:name=".utils.FirebaseNotifService"
-            android:permission="com.google.android.c2dm.permission.SEND"
-            android:exported="true">
-
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-            </intent-filter>
-
-        </service>
 
         <activity
             android:name=".ui.EditData"
@@ -54,6 +50,20 @@
         <activity
             android:name=".ui.MainActivity"
             android:exported="false" />
+
+        <service android:name=".utils.FirebaseNotifService"
+            android:enabled="true"
+            android:exported="false"
+            android:permission="com.google.android.c2dm.permission.SEND">
+
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+
+        </service>
     </application>
+
+
 
 </manifest>

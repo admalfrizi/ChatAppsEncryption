@@ -1,34 +1,29 @@
 package com.aplikasi.chatappstrials.ui
 
 import android.annotation.SuppressLint
-import android.content.Intent
-import android.os.Build
+import android.content.ContentValues.TAG
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Message
 import android.util.Log
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.aplikasi.chatappstrials.RetrofitInstance
-import com.aplikasi.chatappstrials.databinding.ChatListViewBinding
+import com.android.volley.DefaultRetryPolicy
+import com.android.volley.toolbox.JsonObjectRequest
 import com.aplikasi.chatappstrials.databinding.ChatRoomBinding
 import com.aplikasi.chatappstrials.models.Chat
-import com.aplikasi.chatappstrials.models.ChatNotifications
-import com.aplikasi.chatappstrials.models.PushNotifications
 import com.aplikasi.chatappstrials.ui.adapter.ChatAdapter
 import com.aplikasi.chatappstrials.utils.Constants
 import com.aplikasi.chatappstrials.utils.CryptoFunc
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import com.google.firebase.database.ktx.getValue
+import com.android.volley.Response
+import com.android.volley.toolbox.Volley
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.ktx.Firebase
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.ktx.messaging
+import org.json.JSONObject
 
 
 class ChatRoom : AppCompatActivity() {
@@ -41,7 +36,6 @@ class ChatRoom : AppCompatActivity() {
     var receiverRoom : String? = null
     var senderRoom : String? = null
 
-    var topic = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -109,24 +103,83 @@ class ChatRoom : AppCompatActivity() {
                             .setValue(messageObject)
                     }
                 binding.chatEdt.setText("")
-                topic = "/topic/$receiverUid"
-                PushNotifications(ChatNotifications(name!!, msgEncrypt!!), topic).also {
-                    sendNotif(it)
-                }
+
+                val database = FirebaseDatabase.getInstance(Constants.FIREBASE_DB_URL).getReference("users").child(receiverUid!!)
+                database.addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        if(snapshot.exists()){
+
+                            Firebase.messaging.token.addOnCompleteListener(
+                                OnCompleteListener { task ->
+                                    if (!task.isSuccessful) {
+                                        Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                                        return@OnCompleteListener
+                                    }
+
+                                    // Get new FCM registration token
+                                    val token = task.result
+
+                                    val to = JSONObject()
+                                    val data = JSONObject()
+
+                                    data.put("senderUid", senderUid)
+                                    data.put("title", name)
+                                    data.put("message", message)
+
+                                    to.put("to", "/topic/$token")
+                                    to.put("data", data)
+                                    sendNotif(to)
+
+                                    Log.d(TAG, "Token : $token")
+
+                                })
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        TODO("Not yet implemented")
+                    }
+
+                })
             }
         }
     }
 
-    private fun sendNotif(it: PushNotifications) = CoroutineScope(Dispatchers.IO).launch {
-        try {
-            val response = RetrofitInstance.api.postNotif(it)
-            if(response.isSuccessful){
-                Log.d("TAG", "Response : ${response.message()}")
-            } else {
-                Log.e("TAG", response.errorBody()!!.toString())
+    private fun sendNotif(to: JSONObject) {
+
+        val request: JsonObjectRequest = object : JsonObjectRequest(
+            Method.POST,
+            Constants.FCM_URL,
+            to,
+            Response.Listener { response: JSONObject ->
+                Log.d("TAG", "onResponse : $response")
+            },
+            Response.ErrorListener {
+                Log.d("TAG","onError: $it")
             }
-        } catch (e: Exception) {
-            Log.e("TAG", e.toString())
+        ) {
+            override fun getHeaders(): MutableMap<String, String> {
+                val map: MutableMap<String, String> = HashMap()
+
+                map["Authorization"] = "key=" + Constants.SERVER_KEY
+                map["Content-type"] = "application/json"
+                return map
+            }
+
+            override fun getBodyContentType(): String {
+                return "application/json"
+            }
         }
+
+        val requestQueue = Volley.newRequestQueue(this)
+        request.retryPolicy = DefaultRetryPolicy(
+            30000,
+            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+        )
+
+        requestQueue.add(request)
     }
+
+
 }

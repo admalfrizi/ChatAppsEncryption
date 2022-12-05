@@ -45,18 +45,6 @@ class HomeFragment : Fragment() {
         userList = ArrayList()
         setListChat()
 
-        FirebaseNotifService.sharedPref = context?.getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
-        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener {
-            task ->
-
-            if(!task.isSuccessful){
-                Log.w(TAG,"Error Fetching FCM Token Failed", task.exception)
-                return@OnCompleteListener
-            }
-
-            val tokenUser = task.result
-            FirebaseNotifService.token = tokenUser
-        })
 
         return root
     }
