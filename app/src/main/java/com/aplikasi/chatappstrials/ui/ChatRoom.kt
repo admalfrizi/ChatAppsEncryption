@@ -35,6 +35,7 @@ class ChatRoom : AppCompatActivity() {
 
     var receiverRoom : String? = null
     var senderRoom : String? = null
+    var all = "all"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -119,14 +120,17 @@ class ChatRoom : AppCompatActivity() {
                                     // Get new FCM registration token
                                     val token = task.result
 
+                                    FirebaseMessaging.getInstance().subscribeToTopic(all)
+
                                     val to = JSONObject()
                                     val data = JSONObject()
+                                    val TOPIC = "/topics/all"
 
                                     data.put("senderUid", senderUid)
                                     data.put("title", name)
                                     data.put("message", message)
 
-                                    to.put("to", "/topic/$token")
+                                    to.put("to", TOPIC)
                                     to.put("data", data)
                                     sendNotif(to)
 

@@ -72,20 +72,12 @@ class FirebaseNotifService : FirebaseMessagingService() {
         val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         manager.createNotificationChannel(channel)
 
-        val intent = Intent(this, ChatRoom::class.java)
-        intent.putExtra("id", id)
-        intent.putExtra("img", img)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-
-        val pendingIntent = PendingIntent.getActivity(this,0, intent, PendingIntent.FLAG_IMMUTABLE)
-
         val notif = Notification.Builder(this, Constants.CHANNEL_ID)
             .setContentTitle(title)
             .setContentText(message)
             .setSmallIcon(R.drawable.ic_chat)
             .setAutoCancel(true)
             .setColor(ResourcesCompat.getColor(resources, R.color.white, null))
-            .setContentIntent(pendingIntent)
             .build()
 
         manager.notify(100, notif)
@@ -104,13 +96,6 @@ class FirebaseNotifService : FirebaseMessagingService() {
             .setColor(ResourcesCompat.getColor(resources, R.color.white, null))
             .setSound(uri)
 
-        val intent = Intent(this, ChatRoom::class.java)
-        intent.putExtra("id", id)
-        intent.putExtra("img", img)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-
-        val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)
-        builder.setContentIntent(pendingIntent)
         val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         manager.notify(Random.nextInt(85 - 65), builder.build())
     }
