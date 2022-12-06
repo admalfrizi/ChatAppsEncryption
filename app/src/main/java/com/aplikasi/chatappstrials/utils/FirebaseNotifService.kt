@@ -32,20 +32,19 @@ class FirebaseNotifService : FirebaseMessagingService() {
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onMessageReceived(remoteData: RemoteMessage) {
         super.onMessageReceived(remoteData)
+
         if(remoteData.data.isNotEmpty()){
 
             val map : Map<String, String> = remoteData.data
 
             val title = map["title"]
             val message = map["message"]
-            val id = map["id"]
-            val img = map["img"]
 
             if(Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
-                createOreoNotif(title, message, id, img)
+                createOreoNotif(title, message)
             }
             else {
-                createNotif(title, message, id, img)
+                createNotif(title, message)
             }
         }
 
@@ -59,7 +58,7 @@ class FirebaseNotifService : FirebaseMessagingService() {
 
     @SuppressLint("UnspecifiedImmutableFlag")
     @RequiresApi(Build.VERSION_CODES.S)
-    private fun createOreoNotif(title: String?, message: String?, id: String?, img: String?) {
+    private fun createOreoNotif(title: String?, message: String?) {
 
         val channel = NotificationChannel(Constants.CHANNEL_ID, "Message", IMPORTANCE_HIGH)
 
@@ -83,7 +82,7 @@ class FirebaseNotifService : FirebaseMessagingService() {
     }
 
     @SuppressLint("UnspecifiedImmutableFlag")
-    private fun createNotif(title: String?, message: String?, id: String?, img: String?) {
+    private fun createNotif(title: String?, message: String?) {
         val uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
         val builder = NotificationCompat.Builder(this, Constants.CHANNEL_ID)
