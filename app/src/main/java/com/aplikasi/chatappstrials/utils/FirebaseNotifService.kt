@@ -33,27 +33,31 @@ class FirebaseNotifService : FirebaseMessagingService() {
     override fun onMessageReceived(remoteData: RemoteMessage) {
         super.onMessageReceived(remoteData)
 
-        if(remoteData.data.isNotEmpty()){
-
+        if(FirebaseAuth.getInstance().currentUser != null) {
             val map : Map<String, String> = remoteData.data
 
             val title = map["title"]
             val message = map["message"]
+            val id = map["senderUid"]
 
-            if(Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
-                createOreoNotif(title, message)
+            if(id != FirebaseAuth.getInstance().currentUser?.uid){
+                if(Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
+                    createOreoNotif(title, message)
+                }
+                else {
+                    createNotif(title, message)
+                }
             }
-            else {
-                createNotif(title, message)
+
+            if (remoteData.notification != null){
+                remoteData.notification?.let {
+                    Log.d(TAG, "Pesan Notifikasi Body : ${it.body}")
+
+                }
             }
         }
 
-        if (remoteData.notification != null){
-            remoteData.notification?.let {
-                Log.d(TAG, "Pesan Notifikasi Body : ${it.body}")
 
-            }
-        }
     }
 
     @SuppressLint("UnspecifiedImmutableFlag")
