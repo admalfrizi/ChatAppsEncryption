@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:paddingHorizontal="10dp"
     android:layout_height="wrap_content">
 
     <RelativeLayout
@@ -10,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:background="@drawable/send_view"
-        android:layout_marginBottom="10dp">
+        android:layout_marginTop="10dp">
 
         <TextView
             android:id="@+id/sender_msg"

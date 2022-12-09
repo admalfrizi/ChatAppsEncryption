@@ -76,8 +76,9 @@
             android:id="@+id/chatView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:paddingHorizontal="10dp"
+            android:fitsSystemWindows="true"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             />
 
     </LinearLayout>
