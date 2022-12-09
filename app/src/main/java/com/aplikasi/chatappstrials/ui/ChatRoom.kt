@@ -36,8 +36,6 @@ class ChatRoom : AppCompatActivity() {
     var receiverRoom : String? = null
     var senderRoom : String? = null
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ChatRoomBinding.inflate(layoutInflater)
