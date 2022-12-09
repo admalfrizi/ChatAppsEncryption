@@ -18,6 +18,7 @@ import com.aplikasi.chatappstrials.models.User
 import com.aplikasi.chatappstrials.ui.adapter.UserAdapter
 import com.aplikasi.chatappstrials.utils.Constants
 import com.aplikasi.chatappstrials.utils.FirebaseNotifService
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -42,6 +43,8 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        binding.loading.startShimmer()
+
         userList = ArrayList()
         setListChat()
 
@@ -54,6 +57,7 @@ class HomeFragment : Fragment() {
 
         mAuth = FirebaseAuth.getInstance()
         mDbRef = FirebaseDatabase.getInstance(Constants.FIREBASE_DB_URL).reference
+
 
         binding.userRv.layoutManager = layoutManager
         userAdapter = UserAdapter(requireActivity(), userList)
@@ -68,7 +72,14 @@ class HomeFragment : Fragment() {
                 userList.clear()
                 for(postSnapshot in snapshot.children){
                     val currentUser = postSnapshot.getValue(User::class.java)
+
+                    binding.loading.stopShimmer()
+                    binding.loading.visibility = View.GONE
+
+                    binding.userRv.visibility = View.VISIBLE
+
                     if(userId != currentUser?.uid){
+
                         userList.add(currentUser!!)
                     }
                 }

@@ -55,6 +55,7 @@ class DashboardFragment : Fragment() {
 
         uidRef.get().addOnCompleteListener { task ->
             if(task.isSuccessful){
+
                 val snapshot = task.result
                 val name = snapshot?.child("name")?.getValue(String::class.java)
                 val email = snapshot?.child("email")?.getValue(String::class.java)
@@ -68,7 +69,6 @@ class DashboardFragment : Fragment() {
                 Log.d("TAG", task.exception!!.message!!)
             }
         }
-
 
         binding.logoutBtn.setOnClickListener {
             dialogLogout()

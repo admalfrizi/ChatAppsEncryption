@@ -11,4 +11,5 @@
     <color name="selected">#679E98</color>
     <color name="text">#076C2C</color>
     <color name="red">#F81234</color>
+    <color name="load_color">#B6B3B4</color>
 </resources>

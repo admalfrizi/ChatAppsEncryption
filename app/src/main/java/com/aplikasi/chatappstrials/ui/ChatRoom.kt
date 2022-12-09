@@ -130,13 +130,13 @@ class ChatRoom : AppCompatActivity() {
                                     val data = JSONObject()
                                     val topic = "/topics/all"
 
-                                    uidRef.get().addOnCompleteListener { task ->
-                                        if (task.isSuccessful){
-                                            val snapshot = task.result
-                                            val name = snapshot.child("name").getValue(String::class.java)
+                                    uidRef.get().addOnCompleteListener {
+                                        if (it.isSuccessful){
+                                            val dataName = it.result
+                                            val sentUser = dataName.child("name").getValue(String::class.java)
 
                                             data.put("senderUid", senderUid)
-                                            data.put("title", name)
+                                            data.put("title", sentUser)
                                             data.put("message", message)
 
                                             to.put("to", topic)
