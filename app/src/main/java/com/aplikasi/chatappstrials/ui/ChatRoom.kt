@@ -124,21 +124,31 @@ class ChatRoom : AppCompatActivity() {
 
                                     FirebaseMessaging.getInstance().subscribeToTopic(all)
 
+                                    val uidRef = mDbRef.child("users").child(senderUid!!)
+
                                     val to = JSONObject()
                                     val data = JSONObject()
                                     val topic = "/topics/all"
 
-                                    data.put("senderUid", senderUid)
-                                    data.put("title", name)
-                                    data.put("message", message)
+                                    uidRef.get().addOnCompleteListener { task ->
+                                        if (task.isSuccessful){
+                                            val snapshot = task.result
+                                            val name = snapshot.child("name").getValue(String::class.java)
 
-                                    to.put("to", topic)
-                                    to.put("token", token)
-                                    to.put("data", data)
-                                    sendNotif(to)
+                                            data.put("senderUid", senderUid)
+                                            data.put("title", name)
+                                            data.put("message", message)
 
-                                    Log.d(TAG, "Token : $token")
-                                    Log.d(TAG, "Topic : $topic")
+                                            to.put("to", topic)
+                                            to.put("token", token)
+                                            to.put("data", data)
+                                            sendNotif(to)
+
+                                            Log.d(TAG, "Token : $token")
+                                            Log.d(TAG, "Topic : $topic")
+                                            Log.d(TAG, "$name")
+                                        }
+                                    }
 
                                 })
                         }

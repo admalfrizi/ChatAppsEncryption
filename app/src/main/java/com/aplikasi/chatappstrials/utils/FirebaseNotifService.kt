@@ -40,7 +40,7 @@ class FirebaseNotifService : FirebaseMessagingService() {
             val message = map["message"]
             val id = map["senderUid"]
 
-            if(id != FirebaseAuth.getInstance().currentUser?.uid){
+            if(id == FirebaseAuth.getInstance().currentUser?.uid){
                 if(Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
                     createOreoNotif(title, message)
                 }

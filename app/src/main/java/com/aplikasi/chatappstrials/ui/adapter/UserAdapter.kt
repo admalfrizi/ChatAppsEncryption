@@ -31,13 +31,14 @@ class UserAdapter(val context: Context, private val userList: ArrayList<User>): 
         with(holder){
             with(userList[position]){
                 binding.username.text = this.name
+                binding.email.text = this.email
                 Glide.with(context).load(this.img_profile).into(binding.imgProfile)
                 binding.root.setOnClickListener {
                     val intent = Intent(context, ChatRoom::class.java)
 
                     intent.putExtra("name", this.name)
                     intent.putExtra("uid", this.uid)
-                    //intent.putExtra("img", this.img_profile)
+                    intent.putExtra("img", this.img_profile)
 
                     context.startActivity(intent)
                 }
