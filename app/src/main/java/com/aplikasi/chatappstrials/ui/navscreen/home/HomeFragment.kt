@@ -3,6 +3,7 @@ package com.aplikasi.chatappstrials.ui.navscreen.home
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,6 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.aplikasi.chatappstrials.databinding.FragmentHomeBinding
 import com.aplikasi.chatappstrials.models.User
+import com.aplikasi.chatappstrials.ui.BottomNav
+import com.aplikasi.chatappstrials.ui.LoginScreen
 import com.aplikasi.chatappstrials.ui.adapter.UserAdapter
 import com.aplikasi.chatappstrials.utils.Constants
 import com.aplikasi.chatappstrials.utils.FirebaseNotifService
@@ -52,19 +55,18 @@ class HomeFragment : Fragment() {
         return root
     }
 
+
     private fun setListChat() {
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(requireContext())
 
         mAuth = FirebaseAuth.getInstance()
         mDbRef = FirebaseDatabase.getInstance(Constants.FIREBASE_DB_URL).reference
 
-
         binding.userRv.layoutManager = layoutManager
         userAdapter = UserAdapter(requireActivity(), userList)
         binding.userRv.adapter = userAdapter
 
         val userId = mAuth.currentUser?.uid
-        FirebaseMessaging.getInstance().subscribeToTopic("/topic/$userId")
 
         mDbRef.child("users").addValueEventListener(object : ValueEventListener {
             @SuppressLint("NotifyDataSetChanged")
