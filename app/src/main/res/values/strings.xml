@@ -34,4 +34,7 @@
     <string name="kamera">Kamera</string>
     <string name="galeri">Galeri</string>
     <string name="this_is_receiver_name">This is Receiver name</string>
+    <string name="koneksi_internet_anda_terputus">Koneksi Internet Anda Terputus !</string>
+    <string name="keluar">Keluar</string>
+    <string name="silahkan_nyalakan_atau_cek_sumber_internet_anda">Silahkan Nyalakan atau Cek Sumber Internet Anda !</string>
 </resources>

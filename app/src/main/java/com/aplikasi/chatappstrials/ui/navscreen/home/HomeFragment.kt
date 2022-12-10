@@ -1,19 +1,31 @@
 package com.aplikasi.chatappstrials.ui.navscreen.home
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.app.Dialog
 import android.content.ContentValues.TAG
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.aplikasi.chatappstrials.databinding.CustomPopupNetworkBinding
+import com.aplikasi.chatappstrials.databinding.CustomPopupWindowBinding
 import com.aplikasi.chatappstrials.databinding.FragmentHomeBinding
 import com.aplikasi.chatappstrials.models.User
 import com.aplikasi.chatappstrials.ui.BottomNav
@@ -54,6 +66,7 @@ class HomeFragment : Fragment() {
 
         return root
     }
+
 
 
     private fun setListChat() {
