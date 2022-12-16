@@ -178,7 +178,7 @@ class ChatRoom : AppCompatActivity() {
                 val map: MutableMap<String, String> = HashMap()
 
                 map["Authorization"] = "key=" + Constants.SERVER_KEY
-                map["Content-type"] = "application/json"
+                map["Content-type"] = Constants.CONTENT_TYPE
                 return map
             }
 
