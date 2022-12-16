@@ -1,7 +1,6 @@
 package com.aplikasi.chatappstrials.ui.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -9,13 +8,11 @@ import com.aplikasi.chatappstrials.databinding.ChatReceiverBinding
 import com.aplikasi.chatappstrials.databinding.ChatSenderBinding
 import com.aplikasi.chatappstrials.databinding.ChatViewBinding
 import com.aplikasi.chatappstrials.models.Chat
-import com.aplikasi.chatappstrials.utils.CryptoFunc
 import com.google.firebase.auth.FirebaseAuth
 
 
 class ChatAdapter(val context: Context, private val chatList: ArrayList<Chat>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var cryptoFunc = CryptoFunc()
     val ITEM_RECEIVE = 1
     val ITEM_SENT = 2
 
@@ -53,16 +50,16 @@ class ChatAdapter(val context: Context, private val chatList: ArrayList<Chat>) :
         return chatList.size
     }
 
-
+    //Fungsi yang akan menjadi tempat untuk mendekripsi isi pesan dari firebasenya
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
         val currentMsg = chatList[position]
 
         if(getItemViewType(position) == ITEM_SENT){
-            (holder as SentViewHolder).sender.text = cryptoFunc.decrypt(currentMsg.message!!)
+            (holder as SentViewHolder).sender.text = currentMsg.message
 
         } else {
-            (holder as ReceiveViewHolder).receiver.text = cryptoFunc.decrypt(currentMsg.message!!)
+            (holder as ReceiveViewHolder).receiver.text = currentMsg.message
 
         }
     }

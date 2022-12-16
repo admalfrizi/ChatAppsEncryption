@@ -20,11 +20,16 @@ class RegisterScreen : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // memanggil component yang berada pada register screen
         binding = RegisterScreenBinding.inflate(layoutInflater)
+
+        // menampilkan register screen
         setContentView(binding.root)
 
+        // untuk memanggil FirebaseAuthentication
         mAuth = FirebaseAuth.getInstance()
 
+        // tombol untuk membuat registrasi pengguna
         binding.regBtn.setOnClickListener {
             binding.ld.visibility = View.VISIBLE
 
@@ -36,14 +41,19 @@ class RegisterScreen : AppCompatActivity() {
         }
     }
 
+    // fungsi untuk mendaftarkan pengguna ke firebase authentication
     private fun register(name: String, email: String, password: String) {
         mAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     binding.ld.visibility = View.GONE
+                    // memasukan data pengguna ke firebase realtime database
                     createUserDb(name, email, mAuth.currentUser?.uid!!)
+
+                    // diarahkan ke login screen
                     val intent = Intent(this, LoginScreen::class.java)
                     startActivity(intent)
+
                 } else {
                     binding.ld.visibility = View.GONE
                     Toast.makeText(this, "Data Anda Salah atau Tidak Ada", Toast.LENGTH_SHORT).show()
@@ -52,8 +62,10 @@ class RegisterScreen : AppCompatActivity() {
 
     }
 
+    // fungsi untuk memasukan data pengguna ke database realtime
     private fun createUserDb(name: String, email: String, uid: String) {
         val img : String? = null
+
         mDbRef = FirebaseDatabase.getInstance(Constants.FIREBASE_DB_URL).reference
         mDbRef.child("users").child(uid).setValue(User(name, email, img, uid))
 

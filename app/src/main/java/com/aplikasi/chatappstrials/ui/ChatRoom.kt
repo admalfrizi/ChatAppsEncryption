@@ -13,7 +13,6 @@ import com.aplikasi.chatappstrials.databinding.ChatRoomBinding
 import com.aplikasi.chatappstrials.models.Chat
 import com.aplikasi.chatappstrials.ui.adapter.ChatAdapter
 import com.aplikasi.chatappstrials.utils.Constants
-import com.aplikasi.chatappstrials.utils.CryptoFunc
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -31,7 +30,6 @@ class ChatRoom : AppCompatActivity() {
     private lateinit var chatAdapter: ChatAdapter
     private lateinit var chatList: ArrayList<Chat>
     private lateinit var mDbRef: DatabaseReference
-    private var cryptoFunc = CryptoFunc()
 
     var receiverRoom : String? = null
     var senderRoom : String? = null
@@ -88,9 +86,7 @@ class ChatRoom : AppCompatActivity() {
         binding.sendBtn.setOnClickListener {
             val message = binding.chatEdt.text.toString()
 
-            val msgEncrypt = cryptoFunc.encrypt(message)
-
-            val messageObject = Chat(msgEncrypt, senderUid)
+            val messageObject = Chat(message, senderUid)
 
             if(message.isEmpty()){
                 Toast.makeText(applicationContext, "message is empty", Toast.LENGTH_SHORT).show()
@@ -178,7 +174,7 @@ class ChatRoom : AppCompatActivity() {
                 val map: MutableMap<String, String> = HashMap()
 
                 map["Authorization"] = "key=" + Constants.SERVER_KEY
-                map["Content-type"] = "application/json"
+                map["Content-type"] = Constants.CONTENT_TYPE
                 return map
             }
 

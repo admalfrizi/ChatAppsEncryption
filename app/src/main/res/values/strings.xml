@@ -37,4 +37,8 @@
     <string name="koneksi_internet_anda_terputus">Koneksi Internet Anda Terputus !</string>
     <string name="keluar">Keluar</string>
     <string name="silahkan_nyalakan_atau_cek_sumber_internet_anda">Silahkan Nyalakan atau Cek Sumber Internet Anda !</string>
+    <string name="title_activity_main2">MainActivity2</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 </resources>
