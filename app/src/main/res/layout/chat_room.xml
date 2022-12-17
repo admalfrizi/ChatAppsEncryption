@@ -83,41 +83,43 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/linearlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="#5B9E97"
         android:paddingVertical="10dp"
-        android:paddingHorizontal="6dp"
-        android:orientation="horizontal">
+        android:paddingHorizontal="10dp">
 
         <EditText
             android:id="@+id/chat_edt"
             android:layout_width="310dp"
             android:layout_height="52dp"
+            android:layout_marginEnd="10dp"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@+id/sendBtn"
             android:background="@drawable/ed_txt"
             android:drawablePadding="21dp"
-            android:textColor="@color/black"
-            android:paddingStart="24dp"
-            android:textSize="13sp"
-            tools:ignore="RtlSymmetry"
-            android:layout_marginEnd="12dp"
             android:hint="@string/tuliskan_pesan_anda_disini"
-            android:textColorHint="#918E8E"
+            android:importantForAutofill="no"
             android:inputType="text"
-            android:importantForAutofill="no" />
+            android:paddingStart="24dp"
+            android:textColor="@color/black"
+            android:textColorHint="#918E8E"
+            android:textSize="13sp"
+            tools:ignore="RtlSymmetry" />
 
 
         <ImageView
+            android:layout_alignParentEnd="true"
             android:id="@+id/sendBtn"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:background="@drawable/send_btn"
             android:padding="12dp"
             android:src="@drawable/ic_baseline_arrow_forward_ios_24"
-            />
-    </LinearLayout>
+            tools:ignore="ContentDescription" />
+    </RelativeLayout>
 
 </RelativeLayout>
