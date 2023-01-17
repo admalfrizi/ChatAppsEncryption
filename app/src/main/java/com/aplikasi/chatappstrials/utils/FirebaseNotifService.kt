@@ -7,10 +7,13 @@ import android.app.NotificationManager
 import android.app.NotificationManager.IMPORTANCE_HIGH
 import android.app.PendingIntent
 import android.content.ContentValues.TAG
+import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Build
 import android.util.Log
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.content.res.ResourcesCompat
@@ -23,7 +26,10 @@ import com.google.firebase.messaging.RemoteMessage
 import kotlin.random.Random
 
 class FirebaseNotifService : FirebaseMessagingService() {
-
+    private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
+    private val notificationManager: NotificationManager by lazy {
+        getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    }
     override fun onNewToken(token: String) {
         super.onNewToken(token)
         updateToken(token)
@@ -41,6 +47,7 @@ class FirebaseNotifService : FirebaseMessagingService() {
             val id = map["senderUid"]
 
             if(id != FirebaseAuth.getInstance().currentUser?.uid){
+
                 if(Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
                     createOreoNotif(title, message)
                 }

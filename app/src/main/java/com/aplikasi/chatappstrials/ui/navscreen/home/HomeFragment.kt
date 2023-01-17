@@ -1,44 +1,29 @@
 package com.aplikasi.chatappstrials.ui.navscreen.home
 
+import android.Manifest
 import android.annotation.SuppressLint
-import android.app.AlertDialog
-import android.app.Dialog
-import android.content.ContentValues.TAG
+import android.app.NotificationManager
 import android.content.Context
-import android.content.DialogInterface
-import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
-import android.widget.TextView
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.aplikasi.chatappstrials.databinding.CustomPopupNetworkBinding
-import com.aplikasi.chatappstrials.databinding.CustomPopupWindowBinding
 import com.aplikasi.chatappstrials.databinding.FragmentHomeBinding
 import com.aplikasi.chatappstrials.models.User
-import com.aplikasi.chatappstrials.ui.BottomNav
-import com.aplikasi.chatappstrials.ui.LoginScreen
 import com.aplikasi.chatappstrials.ui.adapter.UserAdapter
 import com.aplikasi.chatappstrials.utils.Constants
 import com.aplikasi.chatappstrials.utils.FirebaseNotifService
-import com.facebook.shimmer.ShimmerFrameLayout
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import com.google.firebase.iid.FirebaseInstanceIdReceiver
-import com.google.firebase.messaging.FirebaseMessaging
 
 class HomeFragment : Fragment() {
 
@@ -48,7 +33,9 @@ class HomeFragment : Fragment() {
     private lateinit var userList: ArrayList<User>
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDbRef : DatabaseReference
+    private lateinit var requestPermission: ActivityResultLauncher<String>
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -63,10 +50,20 @@ class HomeFragment : Fragment() {
         userList = ArrayList()
         setListChat()
 
+        requestPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()){
+            if(it){
+                FirebaseNotifService()
+            }
+        }
+
+        if(ContextCompat.checkSelfPermission(requireContext(),Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED){
+            FirebaseNotifService()
+        } else {
+            requestPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
 
         return root
     }
-
 
 
     private fun setListChat() {
