@@ -30,6 +30,7 @@ class ChatRoom : AppCompatActivity() {
     private lateinit var chatAdapter: ChatAdapter
     private lateinit var chatList: ArrayList<Chat>
     private lateinit var mDbRef: DatabaseReference
+    //private var cryptoFunc = CryptoFunc()
 
     var receiverRoom : String? = null
     var senderRoom : String? = null
@@ -85,6 +86,8 @@ class ChatRoom : AppCompatActivity() {
 
         binding.sendBtn.setOnClickListener {
             val message = binding.chatEdt.text.toString()
+
+            //val msgEncrypt = cryptoFunc.encrypt(message)
 
             val messageObject = Chat(message, senderUid)
 
