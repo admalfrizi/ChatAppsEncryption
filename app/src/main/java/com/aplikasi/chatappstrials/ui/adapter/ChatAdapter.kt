@@ -75,6 +75,5 @@ class ChatAdapter(val context: Context, private val chatList: ArrayList<Chat>) :
             return ITEM_RECEIVE
         }
     }
-    
 
 }

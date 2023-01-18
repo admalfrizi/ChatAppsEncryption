@@ -9,6 +9,7 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
@@ -16,11 +17,15 @@ import android.util.Log
 import android.view.View
 import android.view.Window
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.aplikasi.chatappstrials.databinding.CustomPopupGalleryBinding
 import com.aplikasi.chatappstrials.databinding.EditDataBinding
 import com.aplikasi.chatappstrials.utils.Constants
+import com.aplikasi.chatappstrials.utils.PhotoPickerAvailabilityChecker
 import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.Continuation
 import com.google.android.gms.tasks.Task
@@ -38,6 +43,7 @@ class EditData : AppCompatActivity() {
     private lateinit var mDbRef: DatabaseReference
     private lateinit var storef: StorageReference
     private var ImageUri : Uri? = null
+    private lateinit var requestImagePermission: ActivityResultLauncher<PickVisualMediaRequest>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,6 +69,9 @@ class EditData : AppCompatActivity() {
             } else {
                 Log.d("TAG", task.exception!!.message!!)
             }
+        }
+        requestImagePermission = registerForActivityResult(ActivityResultContracts.PickVisualMedia()){ uri ->
+            ImageUri = uri
         }
 
         binding.btnBack.setOnClickListener {
@@ -113,13 +122,31 @@ class EditData : AppCompatActivity() {
     }
 
     private fun selectImage() {
-        val intent = Intent().apply {
-            type = "image/*"
-            action = Intent.ACTION_GET_CONTENT
-            putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("image/jpeg", "image/png"))
+
+        requestImagePermission.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+            val pickPhoto = Intent(
+                if (PhotoPickerAvailabilityChecker.isPhotoPickerAvailable()){
+                    Intent(MediaStore.ACTION_PICK_IMAGES)
+                } else {
+                    Intent(Intent.ACTION_GET_CONTENT)
+                }
+            ).apply {
+                type = "image/*"
+            }
+            startActivityForResult(Intent.createChooser(pickPhoto, "Select Image"), 100)
+
+        } else {
+            val intent = Intent().apply {
+                type = "image/*"
+                action = Intent.ACTION_GET_CONTENT
+                putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("image/jpeg", "image/png"))
+            }
+
+            startActivityForResult(Intent.createChooser(intent, "Select Image"), 100)
         }
 
-        startActivityForResult(Intent.createChooser(intent, "Select Image"), 100)
     }
 
     private fun updateData() {

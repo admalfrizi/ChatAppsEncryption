@@ -1,5 +1,6 @@
 package com.aplikasi.chatappstrials.ui.navscreen.home
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
@@ -7,6 +8,7 @@ import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
@@ -19,7 +21,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.TextView
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -48,7 +53,9 @@ class HomeFragment : Fragment() {
     private lateinit var userList: ArrayList<User>
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDbRef : DatabaseReference
+    private lateinit var requestPermission: ActivityResultLauncher<String>
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -63,6 +70,17 @@ class HomeFragment : Fragment() {
         userList = ArrayList()
         setListChat()
 
+        requestPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()){
+            if(it){
+                FirebaseNotifService()
+            }
+        }
+
+        if(ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED){
+            FirebaseNotifService()
+        } else {
+            requestPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
 
         return root
     }
