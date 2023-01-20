@@ -1,28 +1,18 @@
 package com.aplikasi.chatappstrials.ui
 
-import android.Manifest
-import android.annotation.SuppressLint
-import android.app.Dialog
+import android.app.Activity
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
-import android.view.Window
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import com.aplikasi.chatappstrials.databinding.CustomPopupGalleryBinding
+import androidx.appcompat.app.AppCompatActivity
 import com.aplikasi.chatappstrials.databinding.EditDataBinding
 import com.aplikasi.chatappstrials.utils.Constants
 import com.aplikasi.chatappstrials.utils.PhotoPickerAvailabilityChecker
@@ -35,7 +25,6 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
-import java.util.*
 
 class EditData : AppCompatActivity() {
 
@@ -75,7 +64,7 @@ class EditData : AppCompatActivity() {
         }
 
         binding.btnBack.setOnClickListener {
-            super.onBackPressed()
+            onBackPressedDispatcher.onBackPressed()
         }
 
         binding.btnChange.setOnClickListener {
@@ -135,7 +124,7 @@ class EditData : AppCompatActivity() {
             ).apply {
                 type = "image/*"
             }
-            startActivityForResult(Intent.createChooser(pickPhoto, "Select Image"), 100)
+            resultLauncher.launch(pickPhoto)
 
         } else {
             val intent = Intent().apply {
@@ -144,7 +133,7 @@ class EditData : AppCompatActivity() {
                 putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("image/jpeg", "image/png"))
             }
 
-            startActivityForResult(Intent.createChooser(intent, "Select Image"), 100)
+            resultLauncher.launch(intent)
         }
 
     }
@@ -166,7 +155,7 @@ class EditData : AppCompatActivity() {
         mDbRef.child("users").child(id).updateChildren(editData)
         FirebaseAuth.getInstance().currentUser?.updateEmail(email)
         Toast.makeText(this, "Update Data Berhasil", Toast.LENGTH_SHORT).show()
-        super.onBackPressed()
+        onBackPressedDispatcher.onBackPressed()
     }
 
     private fun addImageToDb(uri: String) {
@@ -177,12 +166,12 @@ class EditData : AppCompatActivity() {
         mDbRef.child("users").child(id).updateChildren(addImg)
     }
 
+    private var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result ->
+        val requestCode = 100
 
-    @Deprecated("Deprecated in Java")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == 100 && result.resultCode == Activity.RESULT_OK){
+            val data = result.data
 
-        if(requestCode == 100 && resultCode == RESULT_OK){
             ImageUri = data?.data!!
             Glide.with(this).load(ImageUri).into(binding.imageProfile)
         }
