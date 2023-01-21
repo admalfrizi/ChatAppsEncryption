@@ -1,31 +1,20 @@
 package com.aplikasi.chatappstrials.ui
 
-import android.Manifest
-import android.annotation.SuppressLint
-import android.app.Dialog
+import android.app.Activity
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
-import android.view.Window
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import com.aplikasi.chatappstrials.databinding.CustomPopupGalleryBinding
+import androidx.appcompat.app.AppCompatActivity
 import com.aplikasi.chatappstrials.databinding.EditDataBinding
 import com.aplikasi.chatappstrials.utils.Constants
-import com.aplikasi.chatappstrials.utils.FirebaseNotifService
 import com.aplikasi.chatappstrials.utils.PhotoPickerAvailabilityChecker
 import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.Continuation
@@ -36,14 +25,13 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
-import java.util.*
 
 class EditData : AppCompatActivity() {
 
     private lateinit var binding: EditDataBinding
     private lateinit var mDbRef: DatabaseReference
     private lateinit var storef: StorageReference
-    private var ImageUri : Uri? = null
+    private var imageUri : Uri? = null
     private lateinit var requestImagePermission: ActivityResultLauncher<PickVisualMediaRequest>
 
 
@@ -74,11 +62,11 @@ class EditData : AppCompatActivity() {
         }
 
         requestImagePermission = registerForActivityResult(ActivityResultContracts.PickVisualMedia()){ uri ->
-            ImageUri = uri
+            imageUri = uri
         }
 
         binding.btnBack.setOnClickListener {
-            super.onBackPressed()
+            onBackPressedDispatcher.onBackPressed()
         }
 
         binding.btnChange.setOnClickListener {
@@ -100,11 +88,11 @@ class EditData : AppCompatActivity() {
         val id = FirebaseAuth.getInstance().currentUser!!.uid
         val ref = storef.child("images/$id")
 
-        if(ImageUri == null) {
+        if(imageUri == null) {
             binding.ld.visibility = View.GONE
             Toast.makeText(this, "Gambar Anda Kosong", Toast.LENGTH_SHORT).show()
         } else {
-            ref.putFile(ImageUri!!).continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
+            ref.putFile(imageUri!!).continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
                 if(!task.isSuccessful){
                     task.exception?.let {
                         throw it
@@ -139,16 +127,15 @@ class EditData : AppCompatActivity() {
             ).apply {
                 type = "image/*"
             }
-            startActivityForResult(Intent.createChooser(pickPhoto, "Select Image"), 100)
-
+            resultLauncher.launch(pickPhoto)
         } else {
             val intent = Intent().apply {
                 type = "image/*"
                 action = Intent.ACTION_GET_CONTENT
                 putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("image/jpeg", "image/png"))
             }
+            resultLauncher.launch(intent)
 
-            startActivityForResult(Intent.createChooser(intent, "Select Image"), 100)
         }
     }
 
@@ -169,7 +156,7 @@ class EditData : AppCompatActivity() {
         mDbRef.child("users").child(id).updateChildren(editData)
         FirebaseAuth.getInstance().currentUser?.updateEmail(email)
         Toast.makeText(this, "Update Data Berhasil", Toast.LENGTH_SHORT).show()
-        super.onBackPressed()
+        onBackPressedDispatcher.onBackPressed()
     }
 
     private fun addImageToDb(uri: String) {
@@ -180,14 +167,15 @@ class EditData : AppCompatActivity() {
         mDbRef.child("users").child(id).updateChildren(addImg)
     }
 
+    private var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result ->
+        val requestCode = 100
 
-    @Deprecated("Deprecated in Java")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == 100 && result.resultCode == Activity.RESULT_OK){
+            val data = result.data
 
-        if(requestCode == 100 && resultCode == RESULT_OK){
-            ImageUri = data?.data!!
-            Glide.with(this).load(ImageUri).into(binding.imageProfile)
+            imageUri = data?.data!!
+            Glide.with(this).load(imageUri).into(binding.imageProfile)
         }
     }
+
 }
