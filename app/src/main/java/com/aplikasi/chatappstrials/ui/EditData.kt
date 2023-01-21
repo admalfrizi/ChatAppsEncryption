@@ -31,7 +31,7 @@ class EditData : AppCompatActivity() {
     private lateinit var binding: EditDataBinding
     private lateinit var mDbRef: DatabaseReference
     private lateinit var storef: StorageReference
-    private var ImageUri : Uri? = null
+    private var imageUri : Uri? = null
     private lateinit var requestImagePermission: ActivityResultLauncher<PickVisualMediaRequest>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,7 +60,7 @@ class EditData : AppCompatActivity() {
             }
         }
         requestImagePermission = registerForActivityResult(ActivityResultContracts.PickVisualMedia()){ uri ->
-            ImageUri = uri
+            imageUri = uri
         }
 
         binding.btnBack.setOnClickListener {
@@ -85,11 +85,11 @@ class EditData : AppCompatActivity() {
         val id = FirebaseAuth.getInstance().currentUser!!.uid
         val ref = storef.child("images/$id")
 
-        if(ImageUri == null) {
+        if(imageUri == null) {
             binding.ld.visibility = View.GONE
             Toast.makeText(this, "Gambar Anda Kosong", Toast.LENGTH_SHORT).show()
         } else {
-            ref.putFile(ImageUri!!).continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
+            ref.putFile(imageUri!!).continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
                 if(!task.isSuccessful){
                     task.exception?.let {
                         throw it
@@ -172,8 +172,8 @@ class EditData : AppCompatActivity() {
         if(requestCode == 100 && result.resultCode == Activity.RESULT_OK){
             val data = result.data
 
-            ImageUri = data?.data!!
-            Glide.with(this).load(ImageUri).into(binding.imageProfile)
+            imageUri = data?.data!!
+            Glide.with(this).load(imageUri).into(binding.imageProfile)
         }
     }
 }
